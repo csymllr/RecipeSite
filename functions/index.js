@@ -1,7 +1,8 @@
 const functions = require('firebase-functions');
 const { OpenAI } = require('openai');
+require('dotenv').config(); // Load .env
 
-const openai = new OpenAI({ apiKey: functions.config().openai.key });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
 
 exports.parseRecipe = functions.https.onRequest(async (req, res) => {
   const { text } = req.body;
