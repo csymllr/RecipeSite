@@ -9,7 +9,7 @@
 
 <script setup>
 const backgroundStyle = {
-  backgroundImage: "url('/src/assets/MainBackground.png')"
+  backgroundImage: "url('/assets/MainBackground.png')"
 };
 </script>
 
