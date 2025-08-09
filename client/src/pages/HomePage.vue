@@ -1,5 +1,5 @@
 <template>
-  <div style="background: yellow; color: black; padding: 40px;" class="min-h-screen flex flex-col gap-8 px-4 py-8">
+  <div style="color: black; padding: 40px;" class="min-h-screen flex flex-col gap-8 px-4 py-8">
     <!-- Top Nav Bar Placeholder -->
     <nav class="w-full h-16 bg-white/80 rounded-lg shadow flex items-center justify-between px-6 mb-6">
       <div class="font-bold text-xl text-gray-800">[Nav Bar Placeholder]</div>
