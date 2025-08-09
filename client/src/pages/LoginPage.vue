@@ -401,10 +401,22 @@ const loginWithFacebook = async () => {
   try {
     const auth = getAuth();
     const provider = new FacebookAuthProvider();
+    
+    // Add the correct Facebook scopes
+    provider.addScope('public_profile');
+    // Note: Email permission requires app review from Facebook now
+    
     await signInWithPopup(auth, provider);
     router.push('/');
   } catch (e) {
-    error.value = 'Facebook login failed.';
+    console.error('Facebook login error:', e);
+    if (e.code === 'auth/account-exists-with-different-credential') {
+      error.value = 'An account with this email already exists. Please try another login method.';
+    } else if (e.code === 'auth/popup-closed-by-user') {
+      error.value = 'Login cancelled.';
+    } else {
+      error.value = 'Facebook login failed. Please try again.';
+    }
   }
 };
 </script>
