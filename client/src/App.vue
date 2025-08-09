@@ -8,8 +8,9 @@
 </template>
 
 <script setup>
+import mainBg from '@/assets/MainBackground.png';
 const backgroundStyle = {
-  backgroundImage: "url('/assets/MainBackground.png')"
+  backgroundImage: `url(${mainBg})`
 };
 </script>
 
