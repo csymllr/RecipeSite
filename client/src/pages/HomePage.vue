@@ -2,8 +2,10 @@
   <div style="color: black; padding: 40px;" class="min-h-screen flex flex-col gap-8 px-4 py-8">
     <!-- Top Nav Bar Placeholder -->
     <nav class="w-full h-16 bg-white/80 rounded-lg shadow flex items-center justify-between px-6 mb-6">
-      <div class="font-bold text-xl text-gray-800">[Nav Bar Placeholder]</div>
-      <div class="text-gray-600">Links/Icons</div>
+      <div class="font-bold text-xl text-gray-800">FamilyRecipe</div>
+      <button @click="logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+        Logout
+      </button>
     </nav>
 
     <!-- Recent Recipes Grid -->
@@ -41,5 +43,18 @@
 </template>
 
 <script setup>
-// No logic yet
+import { useRouter } from 'vue-router';
+import { getAuth, signOut } from 'firebase/auth';
+
+const router = useRouter();
+
+const logout = async () => {
+  try {
+    const auth = getAuth();
+    await signOut(auth);
+    router.push('/login');
+  } catch (error) {
+    console.error('Error signing out:', error);
+  }
+};
 </script>
