@@ -57,10 +57,11 @@
               <span>{{ registrationError }}</span>
             </div>
           </form>
-    
-    <!-- Social Login -->
-    <div v-if="!showRegistration" class="mt-6">
-      <div class="divider">Or continue with</div>
+        </div>
+
+        <!-- Social Login -->
+        <div v-if="!showRegistration" class="card-body pt-0">
+          <div class="divider">Or continue with</div>
       <div class="flex flex-col gap-3">
         <button type="button" class="btn btn-outline btn-block" @click="loginWithGoogle">
           <svg class="w-5 h-5" viewBox="0 0 24 24">
@@ -72,7 +73,7 @@
           Continue with Google
         </button>
         
-        <button type="button" class="btn btn-outline btn-block btn-disabled" @click="loginWithFacebook" disabled>
+        <button type="button" class="btn btn-outline btn-block btn-disabled" @click="loginWithFacebook">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
           </svg>
@@ -87,77 +88,77 @@
         </button>
       </div>
     </div>
-
-    <!-- Phone Auth Dialog -->
-    <div v-if="showPhoneDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="modal-box">
-        <button class="btn btn-sm btn-circle absolute right-2 top-2" @click="closePhoneDialog">✕</button>
-        <h2 class="font-bold text-lg mb-4">Phone Authentication</h2>
-        <form @submit.prevent="sendCode" v-if="!codeSent">
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Phone Number</span>
-            </label>
-            <div class="join w-full">
-              <!-- Country Dropdown -->
-              <div class="dropdown">
-                <div tabindex="0" role="button" class="btn btn-outline rounded-r-none join-item">
-                  {{ selectedCountry.flag }} {{ selectedCountry.code }}
-                  <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"></path>
-                  </svg>
-                </div>
-                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-64 max-h-60 overflow-y-auto">
-                  <li v-for="country in countries" :key="country.code">
-                    <a @click="selectCountry(country)" class="text-sm">
-                      {{ country.flag }} {{ country.name }} ({{ country.code }})
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              
-              <!-- Phone Input -->
-              <input 
-                v-model="phoneNumber" 
-                @input="formatPhoneNumber"
-                type="tel" 
-                :placeholder="selectedCountry.example"
-                class="input input-bordered join-item flex-1" 
-                required 
-              />
-            </div>
-            <div class="text-xs opacity-70 mt-1">Enter your phone number without the country code</div>
-          </div>
-          <div id="recaptcha-container" class="mb-4"></div>
-          <button type="submit" class="btn btn-primary w-full">Send Code</button>
-        </form>
-        <form @submit.prevent="verifyCode" v-else class="space-y-4">
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Verification Code</span>
-            </label>
-            <input 
-              v-model="verificationCode" 
-              type="text" 
-              placeholder="Enter verification code" 
-              class="input input-bordered" 
-              required 
-            />
-          </div>
-          <button type="submit" class="btn btn-success w-full">Verify</button>
-        </form>
-        <div v-if="phoneError" class="alert alert-error mt-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>{{ phoneError }}</span>
-        </div>
       </div>
     </div>
   </div>
-</template>
 
-<script setup>
+  <!-- Phone Auth Dialog -->
+  <div v-if="showPhoneDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="modal-box">
+      <button class="btn btn-sm btn-circle absolute right-2 top-2" @click="closePhoneDialog">✕</button>
+      <h2 class="font-bold text-lg mb-4">Phone Authentication</h2>
+      <form @submit.prevent="sendCode" v-if="!codeSent">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Phone Number</span>
+          </label>
+          <div class="join w-full">
+            <!-- Country Dropdown -->
+            <div class="dropdown">
+              <div tabindex="0" role="button" class="btn btn-outline rounded-r-none join-item">
+                {{ selectedCountry.flag }} {{ selectedCountry.code }}
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"></path>
+                </svg>
+              </div>
+              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-64 max-h-60 overflow-y-auto">
+                <li v-for="country in countries" :key="country.code">
+                  <a @click="selectCountry(country)" class="text-sm">
+                    {{ country.flag }} {{ country.name }} ({{ country.code }})
+                  </a>
+                </li>
+              </ul>
+            </div>
+            
+            <!-- Phone Input -->
+            <input 
+              v-model="phoneNumber" 
+              @input="formatPhoneNumber"
+              type="tel" 
+              :placeholder="selectedCountry.example"
+              class="input input-bordered join-item flex-1" 
+              required 
+            />
+          </div>
+          <div class="text-xs opacity-70 mt-1">Enter your phone number without the country code</div>
+        </div>
+        <div id="recaptcha-container" class="mb-4"></div>
+        <button type="submit" class="btn btn-primary w-full">Send Code</button>
+      </form>
+      <form @submit.prevent="verifyCode" v-else class="space-y-4">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Verification Code</span>
+          </label>
+          <input 
+            v-model="verificationCode" 
+            type="text" 
+            placeholder="Enter verification code" 
+            class="input input-bordered" 
+            required 
+          />
+        </div>
+        <button type="submit" class="btn btn-success w-full">Verify</button>
+      </form>
+      <div v-if="phoneError" class="alert alert-error mt-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{ phoneError }}</span>
+      </div>
+    </div>
+  </div>
+</template><script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth';
