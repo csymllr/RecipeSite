@@ -159,9 +159,9 @@
     </div>
   </div>
 </template><script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, FacebookAuthProvider, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth';
 
 const email = ref('');
 const password = ref('');
@@ -181,6 +181,21 @@ const phoneError = ref('');
 const codeSent = ref(false);
 const showCountryDropdown = ref(false);
 let confirmationResult = null;
+
+// Handle redirect result from Facebook login
+onMounted(async () => {
+  try {
+    const auth = getAuth();
+    const result = await getRedirectResult(auth);
+    if (result && result.user) {
+      // User signed in successfully via redirect
+      router.push('/');
+    }
+  } catch (e) {
+    console.error('Redirect result error:', e);
+    error.value = 'Login failed. Please try again.';
+  }
+});
 
 // Country codes for phone authentication
 const countries = ref([
@@ -402,18 +417,18 @@ const loginWithFacebook = async () => {
     const auth = getAuth();
     const provider = new FacebookAuthProvider();
     
-    // Add the correct Facebook scopes
-    provider.addScope('public_profile');
-    // Note: Email permission requires app review from Facebook now
-    
-    await signInWithPopup(auth, provider);
-    router.push('/');
+    // Try redirect method instead of popup to avoid cached permissions
+    await signInWithRedirect(auth, provider);
+    // Note: This will redirect the page, so we don't need router.push here
+    // The redirect result will be handled when the page reloads
   } catch (e) {
     console.error('Facebook login error:', e);
     if (e.code === 'auth/account-exists-with-different-credential') {
       error.value = 'An account with this email already exists. Please try another login method.';
     } else if (e.code === 'auth/popup-closed-by-user') {
       error.value = 'Login cancelled.';
+    } else if (e.code === 'auth/invalid-api-key') {
+      error.value = 'Facebook authentication is not properly configured.';
     } else {
       error.value = 'Facebook login failed. Please try again.';
     }
