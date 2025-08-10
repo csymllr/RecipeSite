@@ -1,78 +1,206 @@
 <template>
-  <div class="min-h-screen bg-base-200 bg-cover bg-center" style="background-image: url('/MainBackground.png');">
-    <div class="min-h-screen flex items-center justify-center p-3 sm:p-4">
-      <div class="card w-full max-w-md sm:max-w-lg shadow-2xl bg-base-100">
-        <div class="card-body p-6 sm:p-8">
-          <h1 class="text-2xl sm:text-3xl font-bold text-center mb-6">Welcome to The Shared Tables</h1>
-          <!-- Login Form -->
-          <form @submit.prevent="login" v-if="!showRegistration" class="space-y-5">
-            <div class="form-control">
-              <input v-model="email" type="email" placeholder="Email" class="input input-bordered w-full text-lg py-4" required />
-            </div>
-            <div class="form-control">
-              <input v-model="password" type="password" placeholder="Password" class="input input-bordered w-full text-lg py-4" required />
-            </div>
-            <div class="form-control mt-6">
-              <button type="submit" class="btn btn-primary w-full text-lg py-4 h-auto">Login</button>
-            </div>
-            <div v-if="error" class="alert alert-error mt-4">
-              <span class="text-base">{{ error }}</span>
-            </div>
-          </form>
-          <!-- Registration Form -->
-          <form @submit.prevent="register" v-else class="space-y-4">
-            <h2 class="text-xl font-bold text-center mb-2">Create Account</h2>
-            <p class="text-center text-sm opacity-70 mb-4">Email not found. Let's create your account for The Shared Tables!</p>
-            <div class="form-control">
-              <input v-model="email" type="email" placeholder="Email" class="input input-bordered w-full text-lg py-4" required />
-            </div>
-            <div class="form-control">
-              <input v-model="password" type="password" placeholder="Password (min 6 characters)" class="input input-bordered w-full text-lg py-4" required />
-            </div>
-            <div class="form-control">
-              <input v-model="confirmPassword" type="password" placeholder="Confirm Password" class="input input-bordered w-full text-lg py-4" required />
-            </div>
-            <div class="flex flex-col gap-3 mt-6">
-              <button type="button" @click="backToLogin" class="btn btn-outline w-full text-lg py-4 h-auto">Back to Login</button>
-              <button type="submit" class="btn btn-success w-full text-lg py-4 h-auto">Create Account</button>
-            </div>
-            <div v-if="registrationError" class="alert alert-error mt-4">
-              <span class="text-base">{{ registrationError }}</span>
-            </div>
-          </form>
-        </div>
-
-        <!-- Social Login -->
-        <div v-if="!showRegistration" class="card-body pt-0 pb-6">
-          <div class="divider">Or continue with</div>
-          <div class="flex flex-col gap-3">
-            <button type="button" class="btn btn-outline btn-block text-lg py-4 h-auto" @click="loginWithGoogle">
-              <svg class="w-5 h-5" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+  <div
+    class="min-h-screen bg-gradient-to-br from-primary/10 via-base-200 to-secondary/10 flex flex-col items-center justify-center p-3 sm:p-4 relative overflow-hidden"
+  >
+    <!-- Animated background elements -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute -top-4 -left-4 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute -bottom-8 -right-8 w-96 h-96 bg-secondary/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div class="absolute top-1/2 left-1/4 w-32 h-32 bg-accent/10 rounded-full blur-2xl animate-bounce delay-500"></div>
+      <div class="absolute top-1/4 right-1/3 w-48 h-48 bg-primary/3 rounded-full blur-2xl animate-pulse delay-2000"></div>
+      <div class="absolute bottom-1/4 left-1/2 w-40 h-40 bg-secondary/8 rounded-full blur-3xl animate-bounce delay-700"></div>
+    </div>
+    
+    <!-- Main card with enhanced styling -->
+    <div class="card w-full max-w-md sm:max-w-lg shadow-2xl bg-base-100/95 backdrop-blur-sm border border-white/30 relative z-10 hover:shadow-3xl transition-all duration-300">
+      <div class="card-body p-6 sm:p-8 relative">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-t-lg"></div>
+        
+        <h1 class="text-2xl sm:text-3xl font-bold text-center mb-6" style="color: #370000; text-shadow: 0 2px 4px rgba(55, 0, 0, 0.2);">
+          Welcome to The Shared Tables
+        </h1>
+        <!-- Login Form -->
+        <form
+          @submit.prevent="login"
+          v-if="!showRegistration"
+          class="space-y-5 animate-in fade-in duration-300"
+        >
+          <div class="form-control group">
+            <div class="relative">
+              <input
+                v-model="email"
+                type="email"
+                placeholder="Email"
+                class="input input-bordered w-full text-lg py-4 pl-12 transition-all duration-200 focus:scale-105 focus:shadow-lg group-hover:shadow-md"
+                required
+              />
+              <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-base-content/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>
-              Continue with Google
-            </button>
-            
-            <button type="button" class="btn btn-outline btn-block text-lg py-4 h-auto" @click="showPhoneDialog = true">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+            </div>
+          </div>
+          <div class="form-control group">
+            <div class="relative">
+              <input
+                v-model="password"
+                type="password"
+                placeholder="Password"
+                class="input input-bordered w-full text-lg py-4 pl-12 transition-all duration-200 focus:scale-105 focus:shadow-lg group-hover:shadow-md"
+                required
+              />
+              <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-base-content/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              Continue with Phone
+            </div>
+          </div>
+          <div class="form-control mt-6">
+            <button
+              type="submit"
+              class="btn btn-primary w-full text-lg py-4 h-auto transform hover:scale-105 transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-primary to-primary-focus border-0"
+            >
+              <span class="relative z-10">Login</span>
             </button>
           </div>
+          <div v-if="error" class="alert alert-error mt-4 animate-in slide-in-from-bottom duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-base">{{ error }}</span>
+          </div>
+        </form>
+        <!-- Registration Form -->
+        <form @submit.prevent="register" v-else class="space-y-4 animate-in fade-in duration-300">
+          <h2 class="text-xl font-bold text-center mb-2 bg-gradient-to-r from-success to-success-focus bg-clip-text text-transparent">Create Account</h2>
+          <p class="text-center text-sm opacity-70 mb-4">
+            Email not found. Let's create your account for The Shared Tables!
+          </p>
+          <div class="form-control group">
+            <div class="relative">
+              <input
+                v-model="email"
+                type="email"
+                placeholder="Email"
+                class="input input-bordered w-full text-lg py-4 pl-12 transition-all duration-200 focus:scale-105 focus:shadow-lg group-hover:shadow-md"
+                required
+              />
+              <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-base-content/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+              </svg>
+            </div>
+          </div>
+          <div class="form-control group">
+            <div class="relative">
+              <input
+                v-model="password"
+                type="password"
+                placeholder="Password (min 6 characters)"
+                class="input input-bordered w-full text-lg py-4 pl-12 transition-all duration-200 focus:scale-105 focus:shadow-lg group-hover:shadow-md"
+                required
+              />
+              <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-base-content/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+          </div>
+          <div class="form-control group">
+            <div class="relative">
+              <input
+                v-model="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                class="input input-bordered w-full text-lg py-4 pl-12 transition-all duration-200 focus:scale-105 focus:shadow-lg group-hover:shadow-md"
+                required
+              />
+              <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-base-content/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="flex flex-col gap-3 mt-6">
+            <button
+              type="button"
+              @click="backToLogin"
+              class="btn btn-outline w-full text-lg py-4 h-auto transform hover:scale-105 transition-all duration-200 hover:shadow-lg"
+            >
+              Back to Login
+            </button>
+            <button
+              type="submit"
+              class="btn btn-success w-full text-lg py-4 h-auto transform hover:scale-105 transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-success to-success-focus border-0"
+            >
+              <span class="relative z-10">Create Account</span>
+            </button>
+          </div>
+          <div v-if="registrationError" class="alert alert-error mt-4 animate-in slide-in-from-bottom duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-base">{{ registrationError }}</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Social Login -->
+      <div v-if="!showRegistration" class="card-body pt-0 pb-6 bg-base-100/95 backdrop-blur-sm rounded-b-2xl">
+        <div class="divider text-base font-bold" style="color: #370000; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">Or continue with</div>
+        <div class="flex flex-col gap-3">
+          <button
+            type="button"
+            class="btn btn-outline btn-block text-lg py-4 h-auto transform hover:scale-105 transition-all duration-200 hover:shadow-lg bg-white/90 backdrop-blur-sm hover:bg-blue-50 hover:border-blue-300 border-gray-300 group"
+            @click="loginWithGoogle"
+          >
+            <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-200" viewBox="0 0 24 24">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+            <span style="color: #370000; font-weight: 600;">Continue with Google</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline btn-block text-lg py-4 h-auto transform hover:scale-105 transition-all duration-200 hover:shadow-lg bg-white/90 backdrop-blur-sm hover:bg-green-50 hover:border-green-300 border-gray-300 group"
+            @click="showPhoneDialog = true"
+          >
+            <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-200" fill="#370000" viewBox="0 0 24 24">
+              <path
+                d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+              />
+            </svg>
+            <span style="color: #370000; font-weight: 600;">Continue with Phone</span>
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Phone Auth Dialog -->
-  <div v-if="showPhoneDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="modal-box w-full max-w-md">
-      <button class="btn btn-sm btn-circle absolute right-2 top-2" @click="closePhoneDialog">✕</button>
-      <h2 class="font-bold text-xl mb-4">Phone Authentication</h2>
+  <div
+    v-if="showPhoneDialog"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-300"
+  >
+    <div class="modal-box w-full max-w-md bg-base-100/95 backdrop-blur-sm border border-white/20 shadow-2xl animate-in zoom-in duration-300">
+      <button
+        class="btn btn-sm btn-circle absolute right-2 top-2 hover:scale-110 transition-transform duration-200"
+        @click="closePhoneDialog"
+      >
+        ✕
+      </button>
+      <h2 class="font-bold text-xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Phone Authentication</h2>
       <form @submit.prevent="sendCode" v-if="!codeSent" class="space-y-4">
         <div class="form-control">
           <label class="label">
@@ -81,13 +209,30 @@
           <div class="join w-full flex-col gap-2">
             <!-- Country Dropdown -->
             <div class="dropdown w-full mb-2">
-              <div tabindex="0" role="button" class="btn btn-outline w-full text-base justify-between">
+              <div
+                tabindex="0"
+                role="button"
+                class="btn btn-outline w-full text-base justify-between"
+              >
                 {{ selectedCountry.flag }} {{ selectedCountry.code }}
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"></path>
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 9-7 7-7-7"
+                  ></path>
                 </svg>
               </div>
-              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full max-h-48 overflow-y-auto">
+              <ul
+                tabindex="0"
+                class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full max-h-48 overflow-y-auto"
+              >
                 <li v-for="country in countries" :key="country.code">
                   <a @click="selectCountry(country)" class="text-sm">
                     {{ country.flag }} {{ country.name }} ({{ country.code }})
@@ -96,47 +241,75 @@
               </ul>
             </div>
             <!-- Phone Input -->
-            <input 
-              v-model="phoneNumber" 
+            <input
+              v-model="phoneNumber"
               @input="formatPhoneNumber"
-              type="tel" 
+              type="tel"
               :placeholder="selectedCountry.example"
-              class="input input-bordered w-full text-base" 
-              required 
+              class="input input-bordered w-full text-base"
+              required
             />
           </div>
-          <div class="text-xs opacity-70 mt-1">Enter your phone number without the country code</div>
+          <div class="text-xs opacity-70 mt-1">
+            Enter your phone number without the country code
+          </div>
         </div>
         <div id="recaptcha-container" class="mb-4"></div>
-        <button type="submit" class="btn btn-primary w-full text-base py-3">Send Code</button>
+        <button type="submit" class="btn btn-primary w-full text-base py-3">
+          Send Code
+        </button>
       </form>
       <form @submit.prevent="verifyCode" v-else class="space-y-4">
         <div class="form-control">
           <label class="label">
             <span class="label-text">Verification Code</span>
           </label>
-          <input 
-            v-model="verificationCode" 
-            type="text" 
-            placeholder="Enter verification code" 
-            class="input input-bordered w-full text-base" 
-            required 
+          <input
+            v-model="verificationCode"
+            type="text"
+            placeholder="Enter verification code"
+            class="input input-bordered w-full text-base"
+            required
           />
         </div>
-        <button type="submit" class="btn btn-success w-full text-base py-3">Verify</button>
+        <button type="submit" class="btn btn-success w-full text-base py-3">
+          Verify
+        </button>
       </form>
       <div v-if="phoneError" class="alert alert-error mt-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="stroke-current shrink-0 h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
         </svg>
         <span>{{ phoneError }}</span>
       </div>
     </div>
   </div>
-</template><script setup>
+</template>
+<script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, FacebookAuthProvider, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  createUserWithEmailAndPassword,
+} from 'firebase/auth';
 
 const email = ref('');
 const password = ref('');
@@ -174,18 +347,77 @@ onMounted(async () => {
 
 // Country codes for phone authentication
 const countries = ref([
-  { name: 'United States', code: '+1', flag: '🇺🇸', example: '(555) 123-4567', pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}' },
-  { name: 'Canada', code: '+1', flag: '🇨🇦', example: '(555) 123-4567', pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}' },
-  { name: 'United Kingdom', code: '+44', flag: '🇬🇧', example: '7911 123456', pattern: '[0-9]{4} [0-9]{6}' },
-  { name: 'Australia', code: '+61', flag: '🇦🇺', example: '412 345 678', pattern: '[0-9]{3} [0-9]{3} [0-9]{3}' },
-  { name: 'Germany', code: '+49', flag: '🇩🇪', example: '151 12345678', pattern: '[0-9]{3} [0-9]{8}' },
-  { name: 'France', code: '+33', flag: '🇫🇷', example: '6 12 34 56 78', pattern: '[0-9] [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}' },
-  { name: 'Japan', code: '+81', flag: '🇯🇵', example: '90 1234 5678', pattern: '[0-9]{2} [0-9]{4} [0-9]{4}' },
-  { name: 'India', code: '+91', flag: '🇮🇳', example: '81234 56789', pattern: '[0-9]{5} [0-9]{5}' },
-  { name: 'Brazil', code: '+55', flag: '🇧🇷', example: '11 91234-5678', pattern: '[0-9]{2} [0-9]{5}-[0-9]{4}' },
-  { name: 'Mexico', code: '+52', flag: '🇲🇽', example: '55 1234 5678', pattern: '[0-9]{2} [0-9]{4} [0-9]{4}' }
+  {
+    name: 'United States',
+    code: '+1',
+    flag: '🇺🇸',
+    example: '(555) 123-4567',
+    pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+  },
+  {
+    name: 'Canada',
+    code: '+1',
+    flag: '🇨🇦',
+    example: '(555) 123-4567',
+    pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+  },
+  {
+    name: 'United Kingdom',
+    code: '+44',
+    flag: '🇬🇧',
+    example: '7911 123456',
+    pattern: '[0-9]{4} [0-9]{6}',
+  },
+  {
+    name: 'Australia',
+    code: '+61',
+    flag: '🇦🇺',
+    example: '412 345 678',
+    pattern: '[0-9]{3} [0-9]{3} [0-9]{3}',
+  },
+  {
+    name: 'Germany',
+    code: '+49',
+    flag: '🇩🇪',
+    example: '151 12345678',
+    pattern: '[0-9]{3} [0-9]{8}',
+  },
+  {
+    name: 'France',
+    code: '+33',
+    flag: '🇫🇷',
+    example: '6 12 34 56 78',
+    pattern: '[0-9] [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}',
+  },
+  {
+    name: 'Japan',
+    code: '+81',
+    flag: '🇯🇵',
+    example: '90 1234 5678',
+    pattern: '[0-9]{2} [0-9]{4} [0-9]{4}',
+  },
+  {
+    name: 'India',
+    code: '+91',
+    flag: '🇮🇳',
+    example: '81234 56789',
+    pattern: '[0-9]{5} [0-9]{5}',
+  },
+  {
+    name: 'Brazil',
+    code: '+55',
+    flag: '🇧🇷',
+    example: '11 91234-5678',
+    pattern: '[0-9]{2} [0-9]{5}-[0-9]{4}',
+  },
+  {
+    name: 'Mexico',
+    code: '+52',
+    flag: '🇲🇽',
+    example: '55 1234 5678',
+    pattern: '[0-9]{2} [0-9]{4} [0-9]{4}',
+  },
 ]);
-
 
 const selectedCountry = ref(countries.value[0]); // Default to US
 
@@ -197,9 +429,12 @@ const login = async () => {
     router.push('/');
   } catch (e) {
     console.log('Login error:', e.code, e.message);
-    
+
     // Check if user doesn't exist - redirect to registration
-    if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+    if (
+      e.code === 'auth/user-not-found' ||
+      e.code === 'auth/invalid-credential'
+    ) {
       showRegistration.value = true;
       error.value = '';
     } else if (e.code === 'auth/wrong-password') {
@@ -214,30 +449,32 @@ const login = async () => {
 
 const register = async () => {
   registrationError.value = '';
-  
+
   // Validate passwords match
   if (password.value !== confirmPassword.value) {
     registrationError.value = 'Passwords do not match.';
     return;
   }
-  
+
   // Validate password strength
   if (password.value.length < 6) {
     registrationError.value = 'Password must be at least 6 characters long.';
     return;
   }
-  
+
   try {
     const auth = getAuth();
     await createUserWithEmailAndPassword(auth, email.value, password.value);
     router.push('/');
   } catch (e) {
     console.log('Registration error:', e.code, e.message);
-    
+
     if (e.code === 'auth/email-already-in-use') {
-      registrationError.value = 'This email is already registered. Please try logging in.';
+      registrationError.value =
+        'This email is already registered. Please try logging in.';
     } else if (e.code === 'auth/weak-password') {
-      registrationError.value = 'Password is too weak. Please choose a stronger password.';
+      registrationError.value =
+        'Password is too weak. Please choose a stronger password.';
     } else if (e.code === 'auth/invalid-email') {
       registrationError.value = 'Please enter a valid email address.';
     } else {
@@ -261,7 +498,7 @@ const closePhoneDialog = () => {
   codeSent.value = false;
   showCountryDropdown.value = false;
   confirmationResult = null;
-  
+
   // Clean up recaptcha
   if (window.recaptchaVerifier) {
     window.recaptchaVerifier.clear();
@@ -278,7 +515,7 @@ const selectCountry = (country) => {
 const formatPhoneNumber = () => {
   // Auto-format phone number based on country pattern
   const digits = phoneNumber.value.replace(/\D/g, '');
-  
+
   if (selectedCountry.value.code === '+1') {
     // US/Canada format: (555) 123-4567
     if (digits.length >= 6) {
@@ -298,36 +535,40 @@ const sendCode = async () => {
   phoneError.value = '';
   try {
     const auth = getAuth();
-    
+
     // Debug: Log raw input
     console.log('Raw phone input:', phoneNumber.value);
     console.log('Selected country:', selectedCountry.value);
-    
+
     // Format phone number properly for E.164
     let digits = phoneNumber.value.replace(/\D/g, ''); // Remove all non-digits
     console.log('Digits only:', digits);
-    
+
     // Build E.164 format: +[country code][national number]
     let e164Number = selectedCountry.value.code + digits;
     console.log('E.164 formatted number:', e164Number);
-    
+
     // Validate basic format
     if (e164Number.length < 10 || e164Number.length > 15) {
       throw new Error('Invalid phone number length');
     }
-    
+
     if (!window.recaptchaVerifier) {
       console.log('Creating reCAPTCHA verifier...');
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        size: 'normal',
-        callback: (response) => {
-          console.log('reCAPTCHA solved:', response);
-        },
-        'expired-callback': () => {
-          console.log('reCAPTCHA expired');
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        'recaptcha-container',
+        {
+          size: 'normal',
+          callback: (response) => {
+            console.log('reCAPTCHA solved:', response);
+          },
+          'expired-callback': () => {
+            console.log('reCAPTCHA expired');
+          },
         }
-      });
-      
+      );
+
       // Render the reCAPTCHA
       try {
         await window.recaptchaVerifier.render();
@@ -337,9 +578,13 @@ const sendCode = async () => {
         throw new Error('Failed to load reCAPTCHA');
       }
     }
-    
+
     console.log('Sending verification code to:', e164Number);
-    confirmationResult = await signInWithPhoneNumber(auth, e164Number, window.recaptchaVerifier);
+    confirmationResult = await signInWithPhoneNumber(
+      auth,
+      e164Number,
+      window.recaptchaVerifier
+    );
     console.log('SMS sent successfully!');
     codeSent.value = true;
   } catch (e) {
@@ -347,12 +592,13 @@ const sendCode = async () => {
       error: e,
       code: e.code,
       message: e.message,
-      stack: e.stack
+      stack: e.stack,
     });
-    
+
     // More specific error messages
     if (e.code === 'auth/invalid-phone-number') {
-      phoneError.value = 'Invalid phone number format. Please check your number.';
+      phoneError.value =
+        'Invalid phone number format. Please check your number.';
     } else if (e.code === 'auth/too-many-requests') {
       phoneError.value = 'Too many attempts. Please try again later.';
     } else if (e.code === 'auth/captcha-check-failed') {
@@ -391,7 +637,7 @@ const loginWithFacebook = async () => {
   try {
     const auth = getAuth();
     const provider = new FacebookAuthProvider();
-    
+
     // Try redirect method instead of popup to avoid cached permissions
     await signInWithRedirect(auth, provider);
     // Note: This will redirect the page, so we don't need router.push here
@@ -399,7 +645,8 @@ const loginWithFacebook = async () => {
   } catch (e) {
     console.error('Facebook login error:', e);
     if (e.code === 'auth/account-exists-with-different-credential') {
-      error.value = 'An account with this email already exists. Please try another login method.';
+      error.value =
+        'An account with this email already exists. Please try another login method.';
     } else if (e.code === 'auth/popup-closed-by-user') {
       error.value = 'Login cancelled.';
     } else if (e.code === 'auth/invalid-api-key') {
@@ -412,5 +659,86 @@ const loginWithFacebook = async () => {
 </script>
 
 <style scoped>
-/* All styles now handled by DaisyUI components with autumn theme */
+/* Custom animations and effects */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.shimmer-effect {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Enhanced button hover effects */
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Smooth focus effects */
+.input:focus {
+  box-shadow: 0 0 0 3px rgba(var(--p), 0.2);
+}
+
+/* Card hover effects */
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Logo animation */
+.group:hover img {
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.1));
+}
+
+/* Error message animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.alert-error {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Subtle glow effect for primary buttons */
+.btn-primary {
+  box-shadow: 0 4px 15px rgba(var(--p), 0.3);
+}
+
+.btn-success {
+  box-shadow: 0 4px 15px rgba(var(--su), 0.3);
+}
+
+/* Social button specific hover effects */
+.btn-outline:hover svg {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Phone dialog enhanced styling */
+.modal-box {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Background gradient animation */
+.bg-gradient-to-br {
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 </style>
