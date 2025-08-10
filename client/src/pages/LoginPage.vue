@@ -1,26 +1,20 @@
 <template>
-  <div class="hero min-h-screen bg-base-200">
-    <div class="hero-content flex-col">
-      <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <div class="card-body">
-          <h1 class="text-3xl font-bold text-center mb-6">Welcome to FamilyRecipe</h1>
+  <div class="hero min-h-screen bg-base-200 bg-cover bg-center px-2 sm:px-0" style="background-image: url('/MainBackground.png');">
+    <div class="hero-content flex-col w-full sm:w-auto">
+      <div class="card shrink-0 w-full max-w-sm sm:max-w-md md:max-w-lg shadow-2xl bg-base-100">
+        <div class="card-body p-4 sm:p-8">
+          <h1 class="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">Welcome to FamilyRecipe</h1>
     
           <!-- Login Form -->
-          <form @submit.prevent="login" v-if="!showRegistration">
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Email</span>
-              </label>
-              <input v-model="email" type="email" placeholder="Email" class="input input-bordered" required />
+          <form @submit.prevent="login" v-if="!showRegistration" class="space-y-4">
+            <div class="form-control flex flex-col">
+              <input v-model="email" type="email" placeholder="Email" class="input input-bordered w-full" required />
             </div>
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Password</span>
-              </label>
-              <input v-model="password" type="password" placeholder="Password" class="input input-bordered" required />
+            <div class="form-control flex flex-col">
+              <input v-model="password" type="password" placeholder="Password" class="input input-bordered w-full" required />
             </div>
-            <div class="form-control mt-6">
-              <button type="submit" class="btn btn-primary">Login</button>
+            <div class="form-control mt-4 sm:mt-6">
+              <button type="submit" class="btn btn-primary w-full text-base sm:text-lg py-3">Login</button>
             </div>
             <div v-if="error" class="alert alert-error mt-4">
               <span>{{ error }}</span>
@@ -28,30 +22,21 @@
           </form>
     
           <!-- Registration Form -->
-          <form @submit.prevent="register" v-else>
-            <h2 class="text-2xl font-bold text-center mb-2">Create Account</h2>
-            <p class="text-center text-sm opacity-70 mb-6">Email not found. Let's create your account!</p>
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Email</span>
-              </label>
-              <input v-model="email" type="email" placeholder="Email" class="input input-bordered" required />
+          <form @submit.prevent="register" v-else class="space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-center mb-2">Create Account</h2>
+            <p class="text-center text-sm opacity-70 mb-4 sm:mb-6">Email not found. Let's create your account!</p>
+            <div class="form-control flex flex-col">
+              <input v-model="email" type="email" placeholder="Email" class="input input-bordered w-full" required />
             </div>
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Password</span>
-              </label>
-              <input v-model="password" type="password" placeholder="Password (min 6 characters)" class="input input-bordered" required />
+            <div class="form-control flex flex-col">
+              <input v-model="password" type="password" placeholder="Password (min 6 characters)" class="input input-bordered w-full" required />
             </div>
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Confirm Password</span>
-              </label>
-              <input v-model="confirmPassword" type="password" placeholder="Confirm Password" class="input input-bordered" required />
+            <div class="form-control flex flex-col">
+              <input v-model="confirmPassword" type="password" placeholder="Confirm Password" class="input input-bordered w-full" required />
             </div>
-            <div class="flex gap-2 mt-6">
-              <button type="button" @click="backToLogin" class="btn btn-outline flex-1">Back to Login</button>
-              <button type="submit" class="btn btn-success flex-1">Create Account</button>
+            <div class="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-6">
+              <button type="button" @click="backToLogin" class="btn btn-outline w-full sm:flex-1 text-base sm:text-lg py-3">Back to Login</button>
+              <button type="submit" class="btn btn-success w-full sm:flex-1 text-base sm:text-lg py-3">Create Account</button>
             </div>
             <div v-if="registrationError" class="alert alert-error mt-4">
               <span>{{ registrationError }}</span>
@@ -62,8 +47,8 @@
         <!-- Social Login -->
         <div v-if="!showRegistration" class="card-body pt-0">
           <div class="divider">Or continue with</div>
-      <div class="flex flex-col gap-3">
-        <button type="button" class="btn btn-outline btn-block" @click="loginWithGoogle">
+      <div class="flex flex-col gap-3 w-full">
+        <button type="button" class="btn btn-outline btn-block text-base sm:text-lg py-3" @click="loginWithGoogle">
           <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -81,7 +66,7 @@
           Continue with Facebook
         </button> -->
         
-        <button type="button" class="btn btn-outline btn-block" @click="showPhoneDialog = true">
+        <button type="button" class="btn btn-outline btn-block text-base sm:text-lg py-3" @click="showPhoneDialog = true">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
           </svg>
@@ -94,19 +79,19 @@
   </div>
 
   <!-- Phone Auth Dialog -->
-  <div v-if="showPhoneDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="modal-box">
+  <div v-if="showPhoneDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-2">
+    <div class="modal-box w-full max-w-xs sm:max-w-md p-4 sm:p-8">
       <button class="btn btn-sm btn-circle absolute right-2 top-2" @click="closePhoneDialog">✕</button>
-      <h2 class="font-bold text-lg mb-4">Phone Authentication</h2>
-      <form @submit.prevent="sendCode" v-if="!codeSent">
+      <h2 class="font-bold text-lg sm:text-xl mb-4">Phone Authentication</h2>
+      <form @submit.prevent="sendCode" v-if="!codeSent" class="space-y-4">
         <div class="form-control">
           <label class="label">
             <span class="label-text">Phone Number</span>
           </label>
-          <div class="join w-full">
+          <div class="join w-full flex-col sm:flex-row gap-2 sm:gap-0">
             <!-- Country Dropdown -->
-            <div class="dropdown">
-              <div tabindex="0" role="button" class="btn btn-outline rounded-r-none join-item">
+            <div class="dropdown w-full sm:w-auto mb-2 sm:mb-0">
+              <div tabindex="0" role="button" class="btn btn-outline rounded-r-none join-item w-full sm:w-auto text-base sm:text-lg">
                 {{ selectedCountry.flag }} {{ selectedCountry.code }}
                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"></path>
@@ -120,21 +105,20 @@
                 </li>
               </ul>
             </div>
-            
             <!-- Phone Input -->
             <input 
               v-model="phoneNumber" 
               @input="formatPhoneNumber"
               type="tel" 
               :placeholder="selectedCountry.example"
-              class="input input-bordered join-item flex-1" 
+              class="input input-bordered join-item flex-1 text-base sm:text-lg w-full sm:w-auto" 
               required 
             />
           </div>
           <div class="text-xs opacity-70 mt-1">Enter your phone number without the country code</div>
         </div>
         <div id="recaptcha-container" class="mb-4"></div>
-        <button type="submit" class="btn btn-primary w-full">Send Code</button>
+        <button type="submit" class="btn btn-primary w-full text-base sm:text-lg py-3">Send Code</button>
       </form>
       <form @submit.prevent="verifyCode" v-else class="space-y-4">
         <div class="form-control">
@@ -145,11 +129,11 @@
             v-model="verificationCode" 
             type="text" 
             placeholder="Enter verification code" 
-            class="input input-bordered" 
+            class="input input-bordered text-base sm:text-lg" 
             required 
           />
         </div>
-        <button type="submit" class="btn btn-success w-full">Verify</button>
+        <button type="submit" class="btn btn-success w-full text-base sm:text-lg py-3">Verify</button>
       </form>
       <div v-if="phoneError" class="alert alert-error mt-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
