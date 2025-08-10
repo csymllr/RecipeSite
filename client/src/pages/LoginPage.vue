@@ -1,10 +1,9 @@
 <template>
-  <div class="hero min-h-screen bg-base-200 bg-cover bg-center px-2 sm:px-0" style="background-image: url('/MainBackground.png');">
-    <div class="hero-content flex-col w-full sm:w-auto">
-      <div class="card shrink-0 w-full max-w-sm sm:max-w-md md:max-w-lg shadow-2xl bg-base-100">
+  <div class="min-h-screen flex items-center justify-center bg-base-200 bg-cover bg-center px-2 sm:px-0" style="background-image: url('/MainBackground.png');">
+    <div class="w-full flex items-center justify-center">
+      <div class="card w-full max-w-xs sm:max-w-md md:max-w-lg shadow-2xl bg-base-100 mx-auto">
         <div class="card-body p-4 sm:p-8">
-          <h1 class="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">Welcome to FamilyRecipe</h1>
-    
+          <h1 class="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">Welcome to The Shared Tables</h1>
           <!-- Login Form -->
           <form @submit.prevent="login" v-if="!showRegistration" class="space-y-4">
             <div class="form-control flex flex-col">
@@ -20,11 +19,10 @@
               <span>{{ error }}</span>
             </div>
           </form>
-    
           <!-- Registration Form -->
           <form @submit.prevent="register" v-else class="space-y-4">
             <h2 class="text-xl sm:text-2xl font-bold text-center mb-2">Create Account</h2>
-            <p class="text-center text-sm opacity-70 mb-4 sm:mb-6">Email not found. Let's create your account!</p>
+            <p class="text-center text-sm opacity-70 mb-4 sm:mb-6">Email not found. Let's create your account for The Shared Tables!</p>
             <div class="form-control flex flex-col">
               <input v-model="email" type="email" placeholder="Email" class="input input-bordered w-full" required />
             </div>

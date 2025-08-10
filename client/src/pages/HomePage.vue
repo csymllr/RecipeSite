@@ -2,7 +2,7 @@
   <div style="color: black; padding: 40px;" class="min-h-screen flex flex-col gap-8 px-4 py-8">
     <!-- Top Nav Bar Placeholder -->
     <nav class="w-full h-16 bg-white/80 rounded-lg shadow flex items-center justify-between px-6 mb-6">
-      <div class="font-bold text-xl text-gray-800">FamilyRecipe</div>
+      <div class="font-bold text-xl text-gray-800">The Shared Tables</div>
       <button @click="logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
         Logout
       </button>
